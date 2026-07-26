@@ -113,7 +113,7 @@ export default function Home(){
       <div className="progress-wrap"><div className="progress-label"><span>Planejamento da SLA</span><strong>{total} / {config.timeToFill} dias</strong></div><div className="progress-track"><div className="progress-bar" style={{width:`${Math.min(100,total/config.timeToFill*100)}%`}}/></div></div>
 
       <div className="timeline-viewport">
-        <div className="ribbon-timeline">
+        <div className="ribbon-timeline" style={{gridTemplateColumns:`repeat(${schedule.length}, minmax(0, 1fr))`}}>
           <div className="ribbon-line"/>
           {schedule.map((stage,i)=><article className={`ribbon-step ${i%2===0?"top":"bottom"}`} key={`${stage.name}-${i}`}>
             <div className="step-copy">
