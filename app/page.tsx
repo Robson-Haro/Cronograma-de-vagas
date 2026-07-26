@@ -8,6 +8,7 @@ type Group = { label: string; description: string; timeToFill: number; triageMin
 type ScheduledStage = Stage & { start: Date; end: Date };
 
 const LOGO = "/minerva-logo.svg";
+const PORTAL_URL = "https://robinho-minerva-foods1-muen.vercel.app/";
 
 const GROUPS: Record<GroupKey, Group> = {
   adm1:{label:"Administrativo 1",description:"Assistentes e Tele Vendas",timeToFill:15,triageMinimum:4,stages:[{name:"Abertura e briefing",days:1},{name:"Publicação e atração",days:1},{name:"Triagem",days:4},{name:"Entrevista Hub",days:2},{name:"Entrevista gestor",days:2},{name:"Pesquisas",days:1},{name:"Proposta",days:1},{name:"Reserva técnica",days:3}]},
@@ -87,6 +88,7 @@ export default function Home(){
   }
 
   return <main className="page-shell">
+    <a href={PORTAL_URL} className="talent-home-button" aria-label="Voltar ao Sistema Integrado Talent Manager">⌂ <span>Talent Manager</span></a>
     <div className="orb orb-one"/><div className="orb orb-two"/><div className="orb orb-three"/>
     <header className="hero"><span className="eyebrow">✦ Planejamento inteligente de seleção</span><h1>Vagas <span>Timeline</span></h1><p>Transforme a política de Time to Fill em um cronograma automático, visual e pronto para compartilhar.</p></header>
 
@@ -99,7 +101,7 @@ export default function Home(){
 
     <section ref={panelRef} className="glass-card timeline-card">
       <div className="panel-head">
-        <div><span className="mini-label">CRONOGRAMA DA VAGA</span><h2>{role||"Nome do cargo"}</h2><p>{config.label} · {config.description}</p></div>
+        <div><span className="mini-label">ROADMAP DA VAGA</span><h2>{role||"Nome do cargo"}</h2><p>{config.label} · {config.description}</p></div>
         <div className="brand-block"><img src={LOGO} alt="Minerva Foods"/><div className="status-chip"><span/> Dentro da SLA</div></div>
       </div>
 
