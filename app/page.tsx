@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useRef, useState } from "react";
+import { useMemo, useState } from "react";
 
 type GroupKey = "adm1" | "adm2" | "especialistas" | "lideranca1" | "gerentes" | "executivos";
 type Stage = { name: string; days: number };
@@ -11,12 +11,12 @@ const LOGO = "/minerva-logo.svg";
 const PORTAL_URL = "https://robinho-minerva-foods1-muen.vercel.app/";
 
 const GROUPS: Record<GroupKey, Group> = {
-  adm1:{label:"Administrativo 1",description:"Assistentes e Tele Vendas",timeToFill:15,triageMinimum:4,stages:[{name:"Abertura e briefing",days:1},{name:"Publicação e atração",days:1},{name:"Triagem",days:4},{name:"Entrevista Hub",days:2},{name:"Entrevista gestor",days:2},{name:"Pesquisas",days:1},{name:"Proposta",days:1},{name:"Reserva técnica",days:3}]},
-  adm2:{label:"Administrativo 2",description:"Analistas e Vendedores",timeToFill:20,triageMinimum:4,stages:[{name:"Abertura e briefing",days:2},{name:"Publicação e atração",days:2},{name:"Triagem",days:4},{name:"Entrevista Hub",days:2},{name:"Entrevista gestor",days:3},{name:"Pesquisas",days:2},{name:"Proposta",days:1},{name:"Reserva técnica",days:4}]},
-  especialistas:{label:"Especialistas",description:"Corporativos e Técnicos",timeToFill:30,triageMinimum:4,stages:[{name:"Abertura e briefing",days:2},{name:"Publicação e atração",days:2},{name:"Triagem",days:6},{name:"Entrevista Hub",days:3},{name:"Entrevista gestor",days:3},{name:"Gestão da gestão",days:3},{name:"Pesquisas",days:2},{name:"Proposta",days:1},{name:"Reserva técnica",days:8}]},
-  lideranca1:{label:"Liderança 1",description:"Supervisores e Coordenadores",timeToFill:45,triageMinimum:7,stages:[{name:"Abertura e briefing",days:2},{name:"Publicação e hunting",days:3},{name:"Triagem e mapeamento",days:7},{name:"Entrevista Hub",days:7},{name:"Entrevista gestor",days:3},{name:"Entrevista BP",days:3},{name:"Head de Seleção",days:2},{name:"Compliance",days:3},{name:"Gestor do gestor",days:3},{name:"Decisão e proposta",days:3},{name:"Reserva técnica",days:9}]},
-  gerentes:{label:"Liderança 2 — Gerentes",description:"Gerentes",timeToFill:60,triageMinimum:10,stages:[{name:"Abertura e briefing",days:2},{name:"Publicação e hunting",days:4},{name:"Triagem e mapeamento",days:10},{name:"Entrevista Hub",days:7},{name:"Entrevista gestor",days:3},{name:"Entrevista BP",days:3},{name:"Head de Seleção",days:3},{name:"Compliance",days:3},{name:"Gestor do gestor",days:3},{name:"Decisão em comitê",days:3},{name:"Proposta",days:2},{name:"Reserva técnica",days:17}]},
-  executivos:{label:"Liderança 2 — Executivos",description:"Gerentes Executivos e Diretores",timeToFill:60,triageMinimum:15,stages:[{name:"Abertura e briefing",days:2},{name:"Publicação e hunting",days:4},{name:"Triagem e mapeamento",days:15},{name:"Entrevista Hub",days:7},{name:"Entrevista gestor",days:3},{name:"Entrevista BP",days:3},{name:"Head de Seleção",days:3},{name:"Compliance",days:3},{name:"Gestor do gestor",days:3},{name:"Assessment",days:4},{name:"Decisão em comitê",days:3},{name:"Proposta",days:2},{name:"Reserva técnica",days:8}]}
+  adm1:{label:"Administrativo 1",description:"Assistentes e Tele Vendas",timeToFill:15,triageMinimum:4,stages:[{name:"Abertura e briefing",days:1},{name:"Publicação e atração",days:1},{name:"Triagem",days:4},{name:"Entrevista Hub",days:2},{name:"Entrevista gestor",days:2},{name:"Pesquisas",days:1},{name:"Proposta",days:1},{name:"Processo Admissional",days:3}]},
+  adm2:{label:"Administrativo 2",description:"Analistas e Vendedores",timeToFill:20,triageMinimum:4,stages:[{name:"Abertura e briefing",days:2},{name:"Publicação e atração",days:2},{name:"Triagem",days:4},{name:"Entrevista Hub",days:2},{name:"Entrevista gestor",days:3},{name:"Pesquisas",days:2},{name:"Proposta",days:1},{name:"Processo Admissional",days:4}]},
+  especialistas:{label:"Especialistas",description:"Corporativos e Técnicos",timeToFill:30,triageMinimum:7,stages:[{name:"Abertura e briefing",days:2},{name:"Publicação e atração",days:2},{name:"Triagem e mapeamento",days:7},{name:"Entrevista Hub",days:3},{name:"Entrevista gestor",days:3},{name:"Gestão da gestão",days:3},{name:"Pesquisas",days:2},{name:"Proposta",days:1},{name:"Processo Admissional",days:7}]},
+  lideranca1:{label:"Liderança 1",description:"Supervisores e Coordenadores",timeToFill:45,triageMinimum:10,stages:[{name:"Abertura e briefing",days:2},{name:"Publicação e hunting",days:3},{name:"Triagem e mapeamento",days:10},{name:"Entrevista Hub",days:7},{name:"Entrevista gestor",days:3},{name:"Entrevista BP",days:3},{name:"Head de Seleção",days:2},{name:"Compliance",days:3},{name:"Gestor do gestor",days:3},{name:"Decisão e proposta",days:3},{name:"Processo Admissional",days:6}]},
+  gerentes:{label:"Liderança 2 — Gerentes",description:"Gerentes",timeToFill:60,triageMinimum:15,stages:[{name:"Abertura e briefing",days:2},{name:"Publicação e hunting",days:4},{name:"Triagem e mapeamento",days:15},{name:"Entrevista Hub de Seleção",days:10},{name:"Entrevista gestor",days:3},{name:"Entrevista BP",days:3},{name:"Head de Seleção",days:3},{name:"Compliance",days:3},{name:"Gestor do gestor",days:3},{name:"Decisão em comitê",days:3},{name:"Proposta",days:2},{name:"Processo Admissional",days:9}]},
+  executivos:{label:"Liderança 2 — Executivos",description:"Gerentes Executivos e Diretores",timeToFill:60,triageMinimum:15,stages:[{name:"Abertura e briefing",days:2},{name:"Publicação e hunting",days:4},{name:"Triagem e mapeamento",days:15},{name:"Entrevista Hub de Seleção",days:10},{name:"Entrevista gestor",days:3},{name:"Entrevista BP",days:3},{name:"Head de Seleção",days:3},{name:"Compliance",days:3},{name:"Gestor do gestor",days:3},{name:"Assessment",days:4},{name:"Decisão em comitê",days:3},{name:"Proposta",days:2},{name:"Processo Admissional",days:5}]}
 };
 
 const addDays=(date:Date,days:number)=>{const d=new Date(date);d.setDate(d.getDate()+days);return d};
@@ -25,116 +25,32 @@ const formatDate=(date:Date)=>new Intl.DateTimeFormat("pt-BR").format(date);
 const todayInput=()=>{const d=new Date();return new Date(d.getTime()-d.getTimezoneOffset()*60000).toISOString().slice(0,10)};
 const buildSchedule=(config:Group,start:Date)=>{let cursor=start;return config.stages.map(stage=>{const stageStart=cursor;const stageEnd=addDays(stageStart,stage.days);cursor=stageEnd;return{...stage,start:stageStart,end:stageEnd}})};
 
-async function elementToPng(element: HTMLElement) {
-  const clone = element.cloneNode(true) as HTMLElement;
-  clone.classList.add("capture-mode");
-  clone.setAttribute("xmlns","http://www.w3.org/1999/xhtml");
-  const css = Array.from(document.styleSheets).flatMap(sheet => {
-    try { return Array.from(sheet.cssRules).map(rule => rule.cssText); } catch { return []; }
-  }).join("\n");
-  const width = Math.max(element.scrollWidth, 1500);
-  const height = element.scrollHeight;
-  const html = new XMLSerializer().serializeToString(clone);
-  const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}"><style>${css}</style><foreignObject width="100%" height="100%">${html}</foreignObject></svg>`;
-  const image = new Image();
-  const url = URL.createObjectURL(new Blob([svg],{type:"image/svg+xml;charset=utf-8"}));
-  await new Promise<void>((resolve,reject)=>{image.onload=()=>resolve();image.onerror=reject;image.src=url});
-  const canvas=document.createElement("canvas");
-  canvas.width=width*2;canvas.height=height*2;
-  const ctx=canvas.getContext("2d");
-  if(!ctx) throw new Error("Canvas indisponível");
-  ctx.scale(2,2);ctx.drawImage(image,0,0);URL.revokeObjectURL(url);
+function loadImage(src:string){return new Promise<HTMLImageElement>((resolve,reject)=>{const img=new Image();img.onload=()=>resolve(img);img.onerror=reject;img.src=src})}
+function wrap(ctx:CanvasRenderingContext2D,text:string,max:number){const lines:string[]=[];let line="";for(const word of text.split(" ")){const test=line?`${line} ${word}`:word;if(ctx.measureText(test).width>max&&line){lines.push(line);line=word}else line=test}if(line)lines.push(line);return lines}
+
+async function makePanel(role:string,config:Group,schedule:ScheduledStage[],startDate:string,finalDate:Date,total:number,slack:number){
+  const width=1800,height=980,scale=2;
+  const canvas=document.createElement("canvas");canvas.width=width*scale;canvas.height=height*scale;
+  const ctx=canvas.getContext("2d");if(!ctx)throw new Error("Canvas indisponível");ctx.scale(scale,scale);
+  const bg=ctx.createLinearGradient(0,0,width,height);bg.addColorStop(0,"#040a12");bg.addColorStop(.55,"#091a2e");bg.addColorStop(1,"#06111f");ctx.fillStyle=bg;ctx.fillRect(0,0,width,height);
+  const panel=ctx.createLinearGradient(60,40,width-60,height-40);panel.addColorStop(0,"rgba(27,59,101,.96)");panel.addColorStop(1,"rgba(7,20,38,.98)");ctx.beginPath();ctx.roundRect(55,40,width-110,height-80,30);ctx.fillStyle=panel;ctx.fill();ctx.strokeStyle="rgba(255,255,255,.18)";ctx.lineWidth=2;ctx.stroke();
+  ctx.fillStyle="#78bfff";ctx.font="800 15px Arial";ctx.fillText("ROADMAP DA VAGA",95,92);ctx.fillStyle="#f5f9ff";ctx.font="700 42px Arial";ctx.fillText(role||"Nome do cargo",95,145);ctx.fillStyle="#aebfd3";ctx.font="500 17px Arial";ctx.fillText(`${config.label} · ${config.description}`,95,178);
+  try{const logo=await loadImage(LOGO);const logoW=220,logoH=logo.height*(logoW/logo.width);ctx.drawImage(logo,width-95-logoW,68,logoW,logoH)}catch{ctx.fillStyle="#577C97";ctx.font="700 31px Arial";ctx.fillText("minerva",width-300,105);ctx.fillStyle="#BF404D";ctx.fillText("foods",width-300,140)}
+  const metrics=[["INÍCIO",formatDate(parseDate(startDate))],["CONCLUSÃO",formatDate(finalDate)],["TIME TO HIRE",`${config.timeToFill} dias`],["FOLGA",`${slack} dias`]];
+  metrics.forEach(([label,value],i)=>{const x=95+i*310;ctx.beginPath();ctx.roundRect(x,215,285,78,16);ctx.fillStyle="rgba(255,255,255,.06)";ctx.fill();ctx.strokeStyle="rgba(255,255,255,.10)";ctx.stroke();ctx.fillStyle="#9fb0c8";ctx.font="700 12px Arial";ctx.fillText(label,x+16,239);ctx.fillStyle="#f5f9ff";ctx.font="700 20px Arial";ctx.fillText(value,x+16,269)});
+  ctx.fillStyle="#9fb0c8";ctx.font="500 13px Arial";ctx.fillText("Planejamento da SLA",95,325);ctx.fillStyle="#f5f9ff";ctx.font="700 13px Arial";ctx.textAlign="right";ctx.fillText(`${total} / ${config.timeToFill} dias`,width-95,325);ctx.textAlign="left";
+  ctx.beginPath();ctx.roundRect(95,340,width-190,10,5);ctx.fillStyle="rgba(255,255,255,.08)";ctx.fill();const progress=ctx.createLinearGradient(95,0,width-95,0);progress.addColorStop(0,"#577C97");progress.addColorStop(.52,"#E5E3B8");progress.addColorStop(1,"#BF404D");ctx.beginPath();ctx.roundRect(95,340,(width-190)*Math.min(1,total/config.timeToFill),10,5);ctx.fillStyle=progress;ctx.fill();
+  const startX=105,usable=width-210,cell=usable/schedule.length,lineY=590;const metal=ctx.createLinearGradient(startX,lineY-24,width-startX,lineY+24);metal.addColorStop(0,"#7f2c36");metal.addColorStop(.18,"#BF404D");metal.addColorStop(.42,"#E5E3B8");metal.addColorStop(.68,"#577C97");metal.addColorStop(1,"#2d536f");ctx.beginPath();ctx.roundRect(startX,lineY-22,usable,44,22);ctx.fillStyle=metal;ctx.fill();ctx.strokeStyle="rgba(255,255,255,.42)";ctx.stroke();
+  schedule.forEach((stage,i)=>{const center=startX+cell*i+cell/2,top=i%2===0,copyY=top?405:675,connectorStart=top?525:655,connectorEnd=top?lineY-27:lineY+27;ctx.strokeStyle="rgba(229,227,184,.5)";ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(center,connectorStart);ctx.lineTo(center,connectorEnd);ctx.stroke();ctx.beginPath();ctx.arc(center,lineY,27,0,Math.PI*2);const marker=ctx.createRadialGradient(center-8,lineY-10,2,center,lineY,29);marker.addColorStop(0,"#9bb2c4");marker.addColorStop(.38,"#577C97");marker.addColorStop(1,"#17283a");ctx.fillStyle=marker;ctx.fill();ctx.lineWidth=4;ctx.strokeStyle="#E5E3B8";ctx.stroke();ctx.fillStyle="#fff";ctx.font="800 13px Arial";ctx.textAlign="center";ctx.fillText(String(i+1).padStart(2,"0"),center,lineY+5);ctx.textAlign="left";const textX=center-cell*.42,maxW=cell*.84;ctx.fillStyle="#f5f9ff";ctx.font="700 12px Arial";const lines=wrap(ctx,stage.name,maxW).slice(0,3);lines.forEach((line,j)=>ctx.fillText(line,textX,copyY+j*16));const offset=lines.length*16+7;ctx.fillStyle="#9fb0c8";ctx.font="500 10px Arial";ctx.fillText(formatDate(stage.start),textX,copyY+offset);ctx.fillText(`até ${formatDate(stage.end)}`,textX,copyY+offset+14);ctx.fillStyle="#E5E3B8";ctx.font="700 10px Arial";ctx.fillText(`${stage.days} dia${stage.days===1?"":"s"}`,textX,copyY+offset+34)});
+  ctx.textAlign="center";ctx.fillStyle="#9fb0c8";ctx.font="500 12px Arial";ctx.fillText("Dias corridos: a contagem inclui finais de semana e feriados.",width/2,height-76);
   return await new Promise<Blob>((resolve,reject)=>canvas.toBlob(blob=>blob?resolve(blob):reject(new Error("Falha ao gerar imagem")),"image/png"));
 }
 
 export default function Home(){
-  const[role,setRole]=useState("");
-  const[group,setGroup]=useState<GroupKey>("adm2");
-  const[startDate,setStartDate]=useState(todayInput);
-  const[state,setState]=useState<"idle"|"working"|"copied"|"downloaded">("idle");
-  const panelRef=useRef<HTMLElement>(null);
-
-  const config=GROUPS[group];
-  const safeStart=startDate||todayInput();
-  const schedule=useMemo(()=>buildSchedule(config,parseDate(safeStart)),[config,safeStart]);
-  const finalDate=schedule.at(-1)?.end??parseDate(safeStart);
-  const total=schedule.reduce((s,x)=>s+x.days,0);
-  const slack=Math.max(0,config.timeToFill-total);
-
-  async function copyPanel(){
-    if(!panelRef.current)return;
-    setState("working");
-    try{
-      const blob=await elementToPng(panelRef.current);
-      if(navigator.clipboard&&"write"in navigator.clipboard&&typeof ClipboardItem!=="undefined"){
-        await navigator.clipboard.write([new ClipboardItem({"image/png":blob})]);
-        setState("copied");
-      }else{
-        const u=URL.createObjectURL(blob),a=document.createElement("a");
-        a.href=u;a.download="vagas-timeline.png";a.click();URL.revokeObjectURL(u);setState("downloaded");
-      }
-    }catch{
-      alert("O navegador bloqueou a cópia da imagem. Use Exportar PNG.");
-      setState("idle");
-    }
-    setTimeout(()=>setState("idle"),2200);
-  }
-
-  async function exportPng(){
-    if(!panelRef.current)return;
-    const blob=await elementToPng(panelRef.current);
-    const u=URL.createObjectURL(blob),a=document.createElement("a");
-    a.href=u;a.download="vagas-timeline.png";a.click();URL.revokeObjectURL(u);
-  }
-
-  return <main className="page-shell">
-    <a href={PORTAL_URL} className="talent-home-button" aria-label="Voltar ao Sistema Integrado Talent Manager">⌂ <span>Talent Manager</span></a>
-    <div className="orb orb-one"/><div className="orb orb-two"/><div className="orb orb-three"/>
-    <header className="hero"><span className="eyebrow">✦ Planejamento inteligente de seleção</span><h1>Vagas <span>Timeline</span></h1><p>Transforme a política de Time to Fill em um cronograma automático, visual e pronto para compartilhar.</p></header>
-
-    <section className="glass-card control-header">
-      <div className="header-field role-field"><label>Nome do cargo</label><input value={role} onChange={e=>setRole(e.target.value)} placeholder="Ex.: Coordenador de Logística"/></div>
-      <div className="header-field"><label>Grupo de cargo</label><select value={group} onChange={e=>setGroup(e.target.value as GroupKey)}>{Object.entries(GROUPS).map(([key,item])=><option key={key} value={key}>{item.label} — {item.description}</option>)}</select></div>
-      <div className="header-field date-field"><label>Data de abertura</label><input type="date" value={safeStart} onChange={e=>setStartDate(e.target.value)}/></div>
-      <button className="secondary-button clear-button" onClick={()=>{setRole("");setGroup("adm2");setStartDate(todayInput())}}>↻ Limpar</button>
-    </section>
-
-    <section ref={panelRef} className="glass-card timeline-card">
-      <div className="panel-head">
-        <div><span className="mini-label">ROADMAP DA VAGA</span><h2>{role||"Nome do cargo"}</h2><p>{config.label} · {config.description}</p></div>
-        <div className="brand-block"><img src={LOGO} alt="Minerva Foods"/><div className="status-chip"><span/> Dentro da SLA</div></div>
-      </div>
-
-      <div className="metrics-grid">
-        <div><span>Início</span><strong>{formatDate(parseDate(safeStart))}</strong></div>
-        <div><span>Conclusão</span><strong>{formatDate(finalDate)}</strong></div>
-        <div><span>Time to Fill</span><strong>{config.timeToFill} dias</strong></div>
-        <div><span>Folga</span><strong>{slack} dias</strong></div>
-      </div>
-
-      <div className="progress-wrap"><div className="progress-label"><span>Planejamento da SLA</span><strong>{total} / {config.timeToFill} dias</strong></div><div className="progress-track"><div className="progress-bar" style={{width:`${Math.min(100,total/config.timeToFill*100)}%`}}/></div></div>
-
-      <div className="timeline-viewport">
-        <div className="ribbon-timeline" style={{gridTemplateColumns:`repeat(${schedule.length}, minmax(0, 1fr))`}}>
-          <div className="ribbon-line"/>
-          {schedule.map((stage,i)=><article className={`ribbon-step ${i%2===0?"top":"bottom"}`} key={`${stage.name}-${i}`}>
-            <div className="step-copy">
-              <h3>{stage.name}</h3>
-              <p>{formatDate(stage.start)} até {formatDate(stage.end)}</p>
-              <span>{stage.days} dia{stage.days===1?"":"s"}</span>
-            </div>
-            <div className="step-marker"><div className="step-index">{String(i+1).padStart(2,"0")}</div></div>
-          </article>)}
-        </div>
-      </div>
-
-      <footer className="panel-footer">Dias corridos: a contagem inclui finais de semana e feriados.</footer>
-    </section>
-
-    <section className="actions-bar glass-card">
-      <button className="primary-button" onClick={copyPanel}>{state==="working"?"Gerando imagem…":state==="copied"?"✓ Painel copiado":state==="downloaded"?"✓ PNG baixado":"▣ Copiar painel com imagem"}</button>
-      <button className="secondary-button" onClick={exportPng}>⇩ Exportar PNG</button>
-      <button className="secondary-button" onClick={()=>window.print()}>⎙ Salvar em PDF</button>
-    </section>
-  </main>;
+  const[role,setRole]=useState("");const[group,setGroup]=useState<GroupKey>("adm2");const[startDate,setStartDate]=useState(todayInput);const[state,setState]=useState<"idle"|"working"|"copied"|"downloaded">("idle");
+  const config=GROUPS[group],safeStart=startDate||todayInput(),schedule=useMemo(()=>buildSchedule(config,parseDate(safeStart)),[config,safeStart]);const finalDate=schedule.at(-1)?.end??parseDate(safeStart),total=schedule.reduce((s,x)=>s+x.days,0),slack=Math.max(0,config.timeToFill-total);
+  const createBlob=()=>makePanel(role,config,schedule,safeStart,finalDate,total,slack);
+  async function copyPanel(){setState("working");try{const blob=await createBlob();if(navigator.clipboard?.write&&typeof ClipboardItem!=="undefined"){await navigator.clipboard.write([new ClipboardItem({"image/png":blob})]);setState("copied")}else throw new Error("Clipboard indisponível")}catch{try{const blob=await createBlob(),u=URL.createObjectURL(blob),a=document.createElement("a");a.href=u;a.download="roadmap-da-vaga.png";document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),1000);setState("downloaded");alert("O navegador não permitiu copiar a imagem. O PNG foi baixado automaticamente.")}catch{setState("idle");alert("Não foi possível gerar a imagem. Atualize a página e tente novamente.")}}setTimeout(()=>setState("idle"),2600)}
+  async function exportPng(){setState("working");try{const blob=await createBlob(),u=URL.createObjectURL(blob),a=document.createElement("a");a.href=u;a.download="roadmap-da-vaga.png";document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),1000);setState("downloaded")}catch{setState("idle");alert("Não foi possível exportar o PNG. Atualize a página e tente novamente.")}setTimeout(()=>setState("idle"),2200)}
+  return <main className="page-shell"><a href={PORTAL_URL} className="talent-home-button" aria-label="Voltar ao Sistema Integrado Talent Manager">⌂ <span>Talent Manager</span></a><div className="orb orb-one"/><div className="orb orb-two"/><div className="orb orb-three"/><header className="hero"><span className="eyebrow">✦ Planejamento inteligente de seleção</span><h1>Vagas <span>Timeline</span></h1><p>Transforme a política de Time to Hire em um roadmap automático, visual e pronto para compartilhar.</p></header><section className="glass-card control-header"><div className="header-field role-field"><label>Nome do cargo</label><input value={role} onChange={e=>setRole(e.target.value)} placeholder="Ex.: Coordenador de Logística"/></div><div className="header-field"><label>Grupo de cargo</label><select value={group} onChange={e=>setGroup(e.target.value as GroupKey)}>{Object.entries(GROUPS).map(([key,item])=><option key={key} value={key}>{item.label} — {item.description}</option>)}</select></div><div className="header-field date-field"><label>Data de abertura</label><input type="date" value={safeStart} onChange={e=>setStartDate(e.target.value)}/></div><button className="secondary-button clear-button" onClick={()=>{setRole("");setGroup("adm2");setStartDate(todayInput())}}>↻ Limpar</button></section><section className="glass-card timeline-card"><div className="panel-head"><div><span className="mini-label">ROADMAP DA VAGA</span><h2>{role||"Nome do cargo"}</h2><p>{config.label} · {config.description}</p></div><div className="brand-block"><img src={LOGO} alt="Minerva Foods"/><div className="status-chip"><span/> Dentro da SLA</div></div></div><div className="metrics-grid"><div><span>Início</span><strong>{formatDate(parseDate(safeStart))}</strong></div><div><span>Conclusão</span><strong>{formatDate(finalDate)}</strong></div><div><span>Time to Hire</span><strong>{config.timeToFill} dias</strong></div><div><span>Folga</span><strong>{slack} dias</strong></div></div><div className="progress-wrap"><div className="progress-label"><span>Planejamento da SLA</span><strong>{total} / {config.timeToFill} dias</strong></div><div className="progress-track"><div className="progress-bar" style={{width:`${Math.min(100,total/config.timeToFill*100)}%`}}/></div></div><div className="timeline-viewport"><div className="ribbon-timeline" style={{gridTemplateColumns:`repeat(${schedule.length}, minmax(0, 1fr))`}}><div className="ribbon-line"/>{schedule.map((stage,i)=><article className={`ribbon-step ${i%2===0?"top":"bottom"}`} key={`${stage.name}-${i}`}><div className="step-copy"><h3>{stage.name}</h3><p>{formatDate(stage.start)} até {formatDate(stage.end)}</p><span>{stage.days} dia{stage.days===1?"":"s"}</span></div><div className="step-marker"><div className="step-index">{String(i+1).padStart(2,"0")}</div></div></article>)}</div></div><footer className="panel-footer">Dias corridos: a contagem inclui finais de semana e feriados.</footer></section><section className="actions-bar glass-card"><button className="primary-button" onClick={copyPanel} disabled={state==="working"}>{state==="working"?"Gerando imagem…":state==="copied"?"✓ Painel copiado":state==="downloaded"?"✓ PNG baixado":"▣ Copiar painel com imagem"}</button><button className="secondary-button" onClick={exportPng} disabled={state==="working"}>⇩ Exportar PNG</button><button className="secondary-button" onClick={()=>window.print()}>⎙ Salvar em PDF</button></section></main>;
 }
