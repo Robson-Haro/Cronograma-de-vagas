@@ -191,7 +191,7 @@ export default function Home() {
 
   const config = GROUPS[group];
   const schedule = useMemo(() => buildSchedule(config, dateFromInput(startDate)), [config, startDate]);
-  const finalDate = schedule[schedule.length - 1]?.end;
+  const finalDate = schedule[schedule.length - 1].end;
   const totalDays = schedule.reduce((sum, stage) => sum + stage.days, 0);
 
   const textSummary = useMemo(() => {
